@@ -68,7 +68,7 @@ void Graph::llenarAdyacencia() {
         nodes[pair.first] = aristas;
         
         if(pair.first != "Bodega Sur" && pair.first != "Bodega Norte"){
-        if(calcularDistancia("Bodega Sur",pair.first)<calcularDistancia("Bodega Norte", pair.first) && locales_sur.size()<(std::round(locales.size())/2)) locales_sur.push_back(pair.first);
+        if(calcularDistancia("Bodega Sur",pair.first)<calcularDistancia("Bodega Norte", pair.first) /*&& locales_sur.size()<(std::round(locales.size())/2)*/) locales_sur.push_back(pair.first);
         else locales_norte.push_back(pair.first);
         }
         
@@ -98,8 +98,8 @@ void Graph::imprimirAdyacencia() const{
 
 float Graph::calculate_tour_distance(const std::vector<std::string>& tour){
     float total_distance = 0;
-    for (size_t i = 0; i < tour.size(); ++i) {
-        total_distance += nodes[tour[i]][tour[(i + 1) % tour.size()]];
+    for (size_t i = 0; i < tour.size()-1; ++i) {
+        total_distance += nodes[tour[i]][tour[i + 1]];
     }
     return total_distance;
 }
@@ -192,12 +192,7 @@ std::vector<std::string> Graph::two_opt_norte() {
         }
     }
     
-    std::cout << "Mejor tour: ";
-    for (const auto& node : best_tour) {
-        std::cout << node << " ";
-    }
-    std::cout << std::endl;
-    std::cout <<"distancia:"<<best_distance<< std::endl;
+
 
 
     return best_tour;
@@ -238,12 +233,9 @@ std::vector<std::string> Graph::two_opt_sur() {
         }
     }
     
-    std::cout << "Mejor tour: ";
-    for (const auto& node : best_tour) {
-        std::cout << node << " ";
-    }
-    std::cout << std::endl;
-    std::cout <<"distancia:"<<best_distance<< std::endl;
+
+
+    locales_sur = best_tour;
 
 
     return best_tour;
@@ -254,5 +246,24 @@ void Graph::ejecutar(){
 
     two_opt_sur();
     two_opt_norte();
+
+}
+void Graph::imprimir(){
+        std::cout << "Mejor tour sur: ";
+    for (int i = 0; i<locales_sur.size();i++) {
+        std::cout << locales_sur[i] << " ";
+    }
+    
+    std::cout << std::endl;
+    std::cout <<"distancia:"<<calculate_tour_distance(locales_sur)<< std::endl;
+
+            std::cout << "Mejor tour: Norte ";
+    for (int i = 0; i<locales_norte.size();i++) {
+        std::cout << locales_norte[i] << " ";
+    }
+    
+    std::cout << std::endl;
+    std::cout <<"distancia:"<<calculate_tour_distance(locales_norte)<< std::endl;
+
 
 }

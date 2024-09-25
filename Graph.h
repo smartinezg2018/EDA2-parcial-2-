@@ -25,6 +25,7 @@ public:
     std::vector<std::string> two_opt();
     std::vector<std::string> two_opt_norte();
     std::vector<std::string> two_opt_sur();
+    void imprimir();
     void ejecutar();
 
 
